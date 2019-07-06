@@ -1,0 +1,48 @@
+<app-page>
+
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/streams/definitions'"></app-page-head-back>
+    <app-page-head-title><strong>Create a stream</strong></app-page-head-title>
+  </app-page-head>
+
+  <p>Create a stream using text based input or the visual editor.</p>
+
+  <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
+    <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
+                [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="55"
+                (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
+
+      <div class="flow-definition-container">
+        <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
+                    (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."
+                    [hintOptions]="hintOptions" [lintOptions]="lintOptions"></dsl-editor>
+      </div>
+
+      <div class="flow-actions">
+        <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
+        <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
+        <button class="btn" (click)="editorContext.autolink = !editorContext.autolink"
+                [ngClass]="{'btn-default-alt': !editorContext.autolink, 'btn-default': editorContext.autolink}">Auto
+          Link
+        </button>
+        <button class="btn" (click)="gridOn = !gridOn"
+                [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid
+        </button>
+      </div>
+
+    </flo-editor>
+  </div>
+
+  <app-page-actions>
+    <button id="back-button" type="button" class="btn btn-default" routerLink="/streams">
+      Cancel
+    </button>
+    <span style="margin-left: 8px;"
+            tooltip="Disabled whilst stream definition(s) invalid !" [isDisabled]="!isCreateStreamsDisabled" container="body" triggers="click:mouseleave" placement="right">
+      <button (click)="createStreamDefs()" class="btn btn-primary" type="button" [disabled]="isCreateStreamsDisabled">
+        Create Stream
+      </button>
+    </span>
+  </app-page-actions>
+
+</app-page>

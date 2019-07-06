@@ -1,0 +1,41 @@
+<app-page>
+
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/tasks/definitions'"></app-page-head-back>
+    <app-page-head-title><strong>Create a task</strong></app-page-head-title>
+  </app-page-head>
+
+  <p> Create a task using text based input or the visual editor.</p>
+
+  <div id="flo-container" class="stream-editor">
+    <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
+                [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="55" [(dsl)]="dsl"
+                (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
+
+      <div class="flow-definition-container">
+        <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
+                    (focus)="editorContext.graphToTextSync=false" placeholder="Enter task definitions here..."
+                    [lintOptions]="lintOptions"></dsl-editor>
+      </div>
+
+      <div class="flow-actions">
+        <button (click)="clearGraph()" class="btn btn-default" type="button">Clear</button>
+        <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
+        <button class="btn" (click)="gridOn = !gridOn"
+                [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid
+        </button>
+
+      </div>
+    </flo-editor>
+  </div>
+
+  <app-page-actions>
+    <button id="back-button" type="button" class="btn btn-default" routerLink="/tasks">
+      Cancel
+    </button>
+    <button (click)="createTaskDefs()" class="btn btn-primary" type="button">
+      Create Task
+    </button>
+  </app-page-actions>
+
+</app-page>
